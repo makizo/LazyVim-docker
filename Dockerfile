@@ -49,7 +49,7 @@ RUN apk update && apk add --no-cache \
 # ユーザーディレクトリの作成
 RUN mkdir -p /home/user
 WORKDIR /home/user
-RUN git clone https://github.com/LazyVim/startar ~/.config/nvim
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
 RUN rm -rf ~/.config/nvim/.git
 
 # デフォルトのシェルをbashに設定（Alpine Linuxではデフォルトでashを使用）
