@@ -1,0 +1,24 @@
+.DEFAULT_GOAL := run
+
+DOCKER=docker
+IMAGE_NAME=lazyvim
+CONTAINER_NAME=my_lazyvim
+CURRENT_DIR := $(shell pwd)
+
+.PHONY: build run clean stop
+
+.build_stamp: Dockerfile
+	$(DOCKER) build -t $(IMAGE_NAME) .
+	touch .build_stamp
+
+build: .build_stamp
+
+run: .build_stamp
+	$(DOCKER) run -it --rm --name $(CONTAINER_NAME) -v $(CURRENT_DIR)/user:/home/user $(IMAGE_NAME)
+
+clean:
+	$(DOCKER) rmi $(IMAGE_NAME)
+	rm -f .build_stamp
+
+stop:
+	$(DOCKER) stop $(CONTAINER_NAME) || true
