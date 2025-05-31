@@ -28,24 +28,6 @@ RUN apk update && apk add --no-cache \
     neovim \
     zsh
 
-# Vimのビルドに必要な追加パッケージのインストール
-### RUN apk add --no-cache \
-###     ncurses-dev \
-###     python3-dev \
-###     gettext-dev
-
-# Vimのソースコードをクローンしてビルド・インストール
-### RUN git clone https://github.com/vim/vim.git /tmp/vim && \
-###     cd /tmp/vim && \
-###     ./configure \
-###         --with-features=huge \
-###         --enable-python3interp=yes \
-###         --enable-multibyte \
-###         --enable-fail-if-missing && \
-###     make -j$(nproc) && \
-###     make install && \
-###     rm -rf /tmp/vim
-
 # ユーザーディレクトリの作成
 RUN mkdir -p /home/user
 WORKDIR /home/user
