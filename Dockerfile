@@ -1,10 +1,10 @@
-# ベースイメージとしてAlpine Linuxの最新版を使用
+# use Alpine Linux:3.21.3 as base image.
 FROM alpine:3.21.3
 
-# タイムゾーンの設定
+# set timezone
 ENV TZ=Asia/Tokyo
 
-# 必要なパッケージのインストール
+# install required packages
 RUN apk update && apk add --no-cache \
     build-base \
     gcc \
@@ -28,15 +28,15 @@ RUN apk update && apk add --no-cache \
     neovim \
     zsh
 
-# ユーザーディレクトリの作成
+# make user dir
 RUN mkdir -p /home/user
 WORKDIR /home/user
 RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
 RUN rm -rf ~/.config/nvim/.git
 
-# デフォルトのシェルをbashに設定（Alpine Linuxではデフォルトでashを使用）
+# set default shell to bash ( in Alpine Linux, default shell is 'ash')
 ### RUN apk add --no-cache bash
 SHELL ["/bin/bash", "-c"]
 
-# コンテナ起動時のコマンド
+# the command which is start at start of container
 CMD ["/bin/bash"]
