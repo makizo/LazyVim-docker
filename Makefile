@@ -14,7 +14,7 @@ CURRENT_DIR := $(shell pwd)
 build: .build_stamp
 
 run: .build_stamp
-	$(DOCKER) run -it --rm --name $(CONTAINER_NAME) -v $(CURRENT_DIR)/user:/home/user $(IMAGE_NAME)
+	$(DOCKER) run -it --name $(CONTAINER_NAME) -v $(CURRENT_DIR)/user:/home/user $(IMAGE_NAME)
 
 clean:
 	$(DOCKER) rmi $(IMAGE_NAME)
