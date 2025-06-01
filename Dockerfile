@@ -1,4 +1,4 @@
-# use Alpine Linux:3.21.3 as base image.
+# use Alpine Linux:3.21.3 as base image
 FROM alpine:3.21.3
 
 # set timezone
@@ -26,17 +26,18 @@ RUN apk update && apk add --no-cache \
     gettext-dev \
     bash \
     neovim \
-    zsh
+    zsh \
+    sudo
 
-# make user dir
-RUN mkdir -p /home/user
-WORKDIR /home/user
-RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
-RUN rm -rf ~/.config/nvim/.git
+# create .config directory and clone LazyVim
+WORKDIR /root
 
-# set default shell to bash ( in Alpine Linux, default shell is 'ash')
-### RUN apk add --no-cache bash
+RUN mkdir -p /root/.config && \
+    git clone https://github.com/LazyVim/starter /root/.config/nvim && \
+    rm -rf /root/.config/nvim/.git
+
+# set default shell to bash
 SHELL ["/bin/bash", "-c"]
 
-# the command which is start at start of container
+# the command which starts at container startup
 CMD ["/bin/bash"]
