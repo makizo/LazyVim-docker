@@ -27,6 +27,12 @@ RUN apk update && apk add --no-cache \
     bash \
     neovim \
     zsh \
+    fd \
+    ripgrep \
+    lazygit \
+    curl \
+    fzf \
+    nerd-fonts-all \
     sudo
 
 # create .config directory and clone LazyVim
