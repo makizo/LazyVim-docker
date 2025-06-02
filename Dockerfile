@@ -28,7 +28,7 @@ RUN apk update && apk add --no-cache \
     neovim \
     zsh \
     sudo \
-    nvim-doc
+    neovim-doc
 
 # create .config directory and clone LazyVim
 WORKDIR /root
