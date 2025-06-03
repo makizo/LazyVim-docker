@@ -1,4 +1,4 @@
 .build_stamp
 user/*
 !user/.bashrc
-
+!user/.bash_aliases
