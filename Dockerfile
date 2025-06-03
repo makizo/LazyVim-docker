@@ -27,12 +27,14 @@ RUN apk update && apk add --no-cache \
     musl-dev \
     ncurses-dev \
     neovim \
+    neovim-doc \
     nerd-fonts \
     pkgconfig \
     python3-dev \
     ripgrep \
     sudo \
     valgrind \
+    zoxide \
     zsh
 
 # create .config directory and clone LazyVim
