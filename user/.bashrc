@@ -4,42 +4,43 @@
 [[ $- != *i* ]] && return
 
 colors() {
-    local fgc bgc vals seq0
+  local fgc bgc vals seq0
 
-    printf "Color escapes are %s\n" '\e[${value};...;${value}m'
-    printf "Values 30..37 are \e[33mforeground colors\e[m\n"
-    printf "Values 40..47 are \e[43mbackground colors\e[m\n"
-    printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
+  printf "Color escapes are %s\n" '\e[${value};...;${value}m'
+  printf "Values 30..37 are \e[33mforeground colors\e[m\n"
+  printf "Values 40..47 are \e[43mbackground colors\e[m\n"
+  printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
 
-    # foreground colors
-    for fgc in {30..37}; do
-        # background colors
-        for bgc in {40..47}; do
-            fgc=${fgc#37} # white
-            bgc=${bgc#40} # black
+  # foreground colors
+  for fgc in {30..37}; do
+    # background colors
+    for bgc in {40..47}; do
+      fgc=${fgc#37} # white
+      bgc=${bgc#40} # black
 
-            vals="${fgc:+$fgc;}${bgc}"
-            vals=${vals%%;}
+      vals="${fgc:+$fgc;}${bgc}"
+      vals=${vals%%;}
 
-            seq0="${vals:+\e[${vals}m}"
-            printf "  %-9s" "${seq0:-(default)}"
-            printf " ${seq0}TEXT\e[m"
-            printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
-        done
-        echo; echo
+      seq0="${vals:+\e[${vals}m}"
+      printf "  %-9s" "${seq0:-(default)}"
+      printf " ${seq0}TEXT\e[m"
+      printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
     done
+    echo
+    echo
+  done
 }
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
 # Change the window title of X terminals
 case ${TERM} in
-    xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
-        PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
-        ;;
-    screen*)
-        PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
-        ;;
+xterm* | rxvt* | Eterm* | aterm | kterm | gnome* | interix | konsole*)
+  PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
+  ;;
+screen*)
+  PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
+  ;;
 esac
 
 use_color=true
@@ -58,45 +59,45 @@ use_color=true
 #     && match_lhs=$(dircolors --print-database)
 # [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
 
-if ${use_color} ; then
-    # Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
-    if type -P dircolors >/dev/null ; then
-        if [[ -f ~/.dir_colors ]] ; then
-            eval "$(dircolors -b ~/.dir_colors)"
-        elif [[ -f /etc/DIR_COLORS ]] ; then
-            eval "$(dircolors -b /etc/DIR_COLORS)"
-        fi
+if ${use_color}; then
+  # Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+  if type -P dircolors >/dev/null; then
+    if [[ -f ~/.dir_colors ]]; then
+      eval "$(dircolors -b ~/.dir_colors)"
+    elif [[ -f /etc/DIR_COLORS ]]; then
+      eval "$(dircolors -b /etc/DIR_COLORS)"
     fi
+  fi
 
-    if [[ ${EUID} == 0 ]] ; then
-        PS1='\[\033[01;31m\][\h\[\033[01;36m\] \w\[\033[01;31m\]]\$\[\033[00m\] '
-    else
-#         PS1='\[\033[01;32m\][\u@\h\[\033[01;33m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
-#         PS1='\033[01;32m\][\u@\h]\[\033[01;33m\] \w\[\033[01;33m\]\n\[\033[01;36m\]\$\[\033[00m\] '
-#         PS1='\033[00;32m\][\u@\h]\[\033[00;33m\] \w\[\033[00;33m\]\n\[\033[00;36m\]\$\[\033[00m\] '
-#         PS1='\033[00;32m\][\u@\h]\[\033[00;33m\] \w\[\033[00;33m\]\[\033[00;36m\] \$\[\033[00m\] '
-#         PS1='\033[00;32m\]\u@\h\[\033[00;33m\] \W\[\033[00;33m\]\[\033[00;36m\] \$\[\033[00m\] '
-#         PS1='\033[00;32m\]\u@\h\[\033[00;33m\] \W\[\033[00;33m\]\[\033[00;36m\] \$\[\033[00m\] ' 
-#         PS1='\[\033[00;32m\]\u@\h\[\033[00;33m\] \W\[\033[00;36m\] \$\[\033[00m\] '
-        PS1='\[\033[00;32m\]\u\[\033[00m\]@\[\033[00;32m\]\h\[\033[00;33m\] \W\[\033[00;36m\] \$\[\033[00m\] '
-    fi
+  if [[ ${EUID} == 0 ]]; then
+    PS1='\[\033[01;31m\][\h\[\033[01;36m\] \w\[\033[01;31m\]]\$\[\033[00m\] '
+  else
+    #         PS1='\[\033[01;32m\][\u@\h\[\033[01;33m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
+    #         PS1='\033[01;32m\][\u@\h]\[\033[01;33m\] \w\[\033[01;33m\]\n\[\033[01;36m\]\$\[\033[00m\] '
+    #         PS1='\033[00;32m\][\u@\h]\[\033[00;33m\] \w\[\033[00;33m\]\n\[\033[00;36m\]\$\[\033[00m\] '
+    #         PS1='\033[00;32m\][\u@\h]\[\033[00;33m\] \w\[\033[00;33m\]\[\033[00;36m\] \$\[\033[00m\] '
+    #         PS1='\033[00;32m\]\u@\h\[\033[00;33m\] \W\[\033[00;33m\]\[\033[00;36m\] \$\[\033[00m\] '
+    #         PS1='\033[00;32m\]\u@\h\[\033[00;33m\] \W\[\033[00;33m\]\[\033[00;36m\] \$\[\033[00m\] '
+    #         PS1='\[\033[00;32m\]\u@\h\[\033[00;33m\] \W\[\033[00;36m\] \$\[\033[00m\] '
+    PS1='\[\033[00;32m\]\u\[\033[00m\]@\[\033[00;32m\]\h\[\033[00;33m\] \W\[\033[00;36m\] \$\[\033[00m\] '
+  fi
 
-    alias ls='ls --color=auto'
-    alias grep='grep --colour=auto'
-    alias egrep='egrep --colour=auto'
-    alias fgrep='fgrep --colour=auto'
+  alias ls='ls --color=auto'
+  alias grep='grep --colour=auto'
+  alias egrep='egrep --colour=auto'
+  alias fgrep='fgrep --colour=auto'
 else
-    if [[ ${EUID} == 0 ]] ; then
-        # show root@ when we don't have colors
-        PS1='\u@\h \W \$ '
-    else
-        PS1='\u@\h \w \$ '
-    fi
+  if [[ ${EUID} == 0 ]]; then
+    # show root@ when we don't have colors
+    PS1='\u@\h \W \$ '
+  else
+    PS1='\u@\h \w \$ '
+  fi
 fi
 
 unset use_color safe_term match_lhs sh
 
-xhost +local:root > /dev/null 2>&1
+xhost +local:root >/dev/null 2>&1
 
 # Bash won't get SIGWINCH if another process is in the foreground.
 # Enable checkwinsize so that bash will check the terminal size when
@@ -120,22 +121,21 @@ PROMPT_COMMAND='history -a; history -n'
 
 # # ex - archive extractor
 # # usage: ex <file>
-ex ()
-{
-  if [ -f "$1" ] ; then
+ex() {
+  if [ -f "$1" ]; then
     case $1 in
-      *.tar.bz2)   tar xjf "$1"   ;;
-      *.tar.gz)    tar xzf "$1"   ;;
-      *.bz2)       bunzip2 "$1"   ;;
-      *.rar)       unrar x "$1"     ;;
-      *.gz)        gunzip "$1"    ;;
-      *.tar)       tar xf "$1"    ;;
-      *.tbz2)      tar xjf "$1"   ;;
-      *.tgz)       tar xzf "$1"   ;;
-      *.zip)       unzip "$1"     ;;
-      *.Z)         uncompress "$1";;
-      *.7z)        7z x "$1"      ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
+    *.tar.bz2) tar xjf "$1" ;;
+    *.tar.gz) tar xzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar x "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xf "$1" ;;
+    *.tbz2) tar xjf "$1" ;;
+    *.tgz) tar xzf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *) echo "'$1' cannot be extracted via ex()" ;;
     esac
   else
     echo "'$1' is not a valid file"
@@ -291,36 +291,36 @@ mycrwl() {
 
 ###   ### for starting ssh-agent
 ###   env=~/.ssh/agent.env
-###   
+###
 ###   agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
-###   
+###
 ###   agent_start () {
 ###       (umask 077; ssh-agent >| "$env")
 ###       . "$env" >| /dev/null ; }
-###   
+###
 ###   agent_load_env
-###   
+###
 ###   # agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2=agent not running
 ###   agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
-###   
+###
 ###   if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
 ###       agent_start
 ###       ssh-add
 ###   elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
 ###       ssh-add
 ###   fi
-###   
+###
 ###   unset env
 ###   ###
 
 # ---makizo---[2023/04/26]
 # for nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"    # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"    # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # ---makizo---[2023/04/26]
-# for node 
+# for node
 # ---makizo---[2024/07/29]: comment outed
 # source /usr/share/nvm/init-nvm.sh
 
@@ -349,22 +349,22 @@ export EDITOR=vim
 ffd() {
   local dir
   dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
+    -o -type d -print 2>/dev/null | fzf +m) &&
+    cd "$dir"
 }
 
 # Another fd - cd into the selected directory
 # This one differs from the above, by only showing the sub directories and not
 #  showing the directories within those.
 afd() {
-  DIR=`find * -maxdepth 0 -type d -print 2> /dev/null | fzf-tmux` \
-    && cd "$DIR"
+  DIR=$(find * -maxdepth 0 -type d -print 2>/dev/null | fzf-tmux) &&
+    cd "$DIR"
 }
 
 # fda - including hidden directories
 fda() {
   local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+  dir=$(find ${1:-.} -type d 2>/dev/null | fzf +m) && cd "$dir"
 }
 
 # fdr - cd to selected parent directory
@@ -390,49 +390,46 @@ cf() {
 
   file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
 
-  if [[ -n $file ]]
-  then
-     if [[ -d $file ]]
-     then
-        cd -- $file
-     else
-        cd -- ${file:h}
-     fi
+  if [[ -n $file ]]; then
+    if [[ -d $file ]]; then
+      cd -- $file
+    else
+      cd -- ${file:h}
+    fi
   fi
 }
 
 # cdf - cd into the directory of the selected file
 cdf() {
-   local file
-   local dir
-   file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+  local file
+  local dir
+  file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
 }
 
 # Another CTRL-T script to select a directory and paste it into line
-__fzf_select_dir ()
-{
-        builtin typeset READLINE_LINE_NEW="$(
-                command find -L . \( -path '*/\.*' -o -fstype dev -o -fstype proc \) \
-                        -prune \
-                        -o -type f -print \
-                        -o -type d -print \
-                        -o -type l -print 2>/dev/null \
-                | command sed 1d \
-                | command cut -b3- \
-                | env fzf -m
-        )"
+__fzf_select_dir() {
+  builtin typeset READLINE_LINE_NEW="$(
+    command find -L . \( -path '*/\.*' -o -fstype dev -o -fstype proc \) \
+      -prune \
+      -o -type f -print \
+      -o -type d -print \
+      -o -type l -print 2>/dev/null |
+      command sed 1d |
+      command cut -b3- |
+      env fzf -m
+  )"
 
-        if
-                [[ -n $READLINE_LINE_NEW ]]
-        then
-                builtin bind '"\er": redraw-current-line'
-                builtin bind '"\e^": magic-space'
-                READLINE_LINE=${READLINE_LINE:+${READLINE_LINE:0:READLINE_POINT}}${READLINE_LINE_NEW}${READLINE_LINE:+${READLINE_LINE:READLINE_POINT}}
-                READLINE_POINT=$(( READLINE_POINT + ${#READLINE_LINE_NEW} ))
-        else
-                builtin bind '"\er":'
-                builtin bind '"\e^":'
-        fi
+  if
+    [[ -n $READLINE_LINE_NEW ]]
+  then
+    builtin bind '"\er": redraw-current-line'
+    builtin bind '"\e^": magic-space'
+    READLINE_LINE=${READLINE_LINE:+${READLINE_LINE:0:READLINE_POINT}}${READLINE_LINE_NEW}${READLINE_LINE:+${READLINE_LINE:READLINE_POINT}}
+    READLINE_POINT=$((READLINE_POINT + ${#READLINE_LINE_NEW}))
+  else
+    builtin bind '"\er":'
+    builtin bind '"\e^":'
+  fi
 }
 
 builtin bind -x '"\C-x1": __fzf_select_dir'
@@ -440,20 +437,20 @@ builtin bind '"\C-t": "\C-x1\e^\er"'
 
 # sshf - select server name where ssh connect to.
 sshf() {
-    local sshLoginHost
-# makizo:20240902: modify for ShellCheck
-# sshLoginHost=`cat ~/.ssh/config | grep -i ^host | awk '{print $2}' | fzf`
-    sshLoginHost=$(grep -i ^host < ~/.ssh/config | awk '{print $2}' | fzf)
-    if [ "$sshLoginHost" = "" ]; then
-        # ex) Ctrl-C.
-        return 1
-    fi
+  local sshLoginHost
+  # makizo:20240902: modify for ShellCheck
+  # sshLoginHost=`cat ~/.ssh/config | grep -i ^host | awk '{print $2}' | fzf`
+  sshLoginHost=$(grep -i ^host <~/.ssh/config | awk '{print $2}' | fzf)
+  if [ "$sshLoginHost" = "" ]; then
+    # ex) Ctrl-C.
+    return 1
+  fi
 
-    ssh "${sshLoginHost}"
+  ssh "${sshLoginHost}"
 }
 
 # set default opts for fzf
-export FZF_DEFAULT_OPTS='--reverse --border'
+# export FZF_DEFAULT_OPTS='--reverse --border'
 
 ## # export PAGER="/usr/local/bin/vim -R -c 'set ft=man nomod nolist' -c 'nnoremap q :q<CR>'"
 ## # export MANPAGER="vim -"
@@ -480,12 +477,12 @@ export MANPAGER='less -R'
 
 # for yazi
 function yy() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
 }
 
 # export PAGER="sed -r 's/\x1B\[[0-9;]*[mGKH]//g' | vim -R -"
@@ -504,17 +501,17 @@ setxkbmap us
 ###           local cur
 ###           cur="${COMP_WORDS[COMP_CWORD]}"
 ###       fi
-###   
+###
 ###       # 変数の宣言
 ###       local cmds
 ###       local functions
 ###       local aliases
-###   
+###
 ###       # 値の代入
 ###       cmds=$(compgen -c)              # 全コマンド一覧を取得
 ###       functions=$(compgen -A function) # 関数一覧を取得
 ###       aliases=$(compgen -A alias)      # エイリアス一覧を取得
-###   
+###
 ###       COMPREPLY=()
 ###       for cmd in $cmds; do
 ###           if [[ $functions =~ $cmd ]]; then
@@ -526,14 +523,14 @@ setxkbmap us
 ###           fi
 ###       done
 ###   }
-###   
+###
 ###   # 任意のコマンド（例として "mycommand"）に対して補完関数を設定
 ###   complete -F _custom_completion
 
 # カスタム補完関数を定義
 function _my_custom_completion() {
-    # 補完候補を設定
-    COMPREPLY=("start" "stop" "restart")
+  # 補完候補を設定
+  COMPREPLY=("start" "stop" "restart")
 }
 
 # 関数を使って mycommand に対する補完を設定
@@ -546,7 +543,7 @@ eval "$(pyenv init -)"
 
 # for bash-completion
 if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+  . /etc/bash_completion
 fi
 
 # set default terminal to alacritty for thunar.
@@ -571,34 +568,33 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # for history+fzf
 function fh() {
-    local selected_command
-    selected_command=$(history | \
-        awk '{ cmd=$0; sub(/^[ ]*[0-9]+[ ]*/, "", cmd); print cmd }' | \
-        sort -nr | \
-        uniq | \
-        fzf --tac --no-sort\
-            --query "$READLINE_LINE" \
-            --prompt="History > " \
-            --preview 'echo {}' \
-            --preview-window down:3:hidden:wrap \
-            --bind '?:toggle-preview' \
-            --bind 'ctrl-j:down' \
-            --bind 'ctrl-k:up' \
-            --bind 'ctrl-d:half-page-down' \
-            --bind 'ctrl-u:half-page-up' \
-            --bind 'alt-f:forward-word' \
-            --bind 'alt-b:backward-word' \
-            --bind 'alt-a:beginning-of-line' \
-            --bind 'alt-e:end-of-line' \
-            --bind 'alt-d:kill-word' \
-            --bind 'alt-h:backward-kill-word' \
-            --bind 'alt-p:preview-up' \
-            --bind 'alt-n:preview-down' \
-            --bind 'esc:abort')
-    if [ -n "$selected_command" ]; then
-        READLINE_LINE="$selected_command"
-        READLINE_POINT=${#READLINE_LINE}
-    fi
+  local selected_command
+  selected_command=$(history |
+    awk '{ cmd=$0; sub(/^[ ]*[0-9]+[ ]*/, "", cmd); print cmd }' |
+    sort -nr |
+    uniq |
+    fzf --tac --no-sort --query "$READLINE_LINE" \
+      --prompt="History > " \
+      --preview 'echo {}' \
+      --preview-window down:3:hidden:wrap \
+      --bind '?:toggle-preview' \
+      --bind 'ctrl-j:down' \
+      --bind 'ctrl-k:up' \
+      --bind 'ctrl-d:half-page-down' \
+      --bind 'ctrl-u:half-page-up' \
+      --bind 'alt-f:forward-word' \
+      --bind 'alt-b:backward-word' \
+      --bind 'alt-a:beginning-of-line' \
+      --bind 'alt-e:end-of-line' \
+      --bind 'alt-d:kill-word' \
+      --bind 'alt-h:backward-kill-word' \
+      --bind 'alt-p:preview-up' \
+      --bind 'alt-n:preview-down' \
+      --bind 'esc:abort')
+  if [ -n "$selected_command" ]; then
+    READLINE_LINE="$selected_command"
+    READLINE_POINT=${#READLINE_LINE}
+  fi
 }
 # fh() {
 #     local selected_command
@@ -612,18 +608,17 @@ bind -x '"\C-r": fh'
 
 # for history+fzf
 function ph() {
-    local selected_command
-    selected_command=$(history | \
-        awk '{ cmd=$0; sub(/^[ ]*[0-9]+[ ]*/, "", cmd); print cmd }' | \
-        sort -nr | \
-        uniq | \
-        peco)
-    
-    if [ -n "$selected_command" ]; then
-        READLINE_LINE="$selected_command"
-        READLINE_POINT=${#READLINE_LINE}
-    fi
+  local selected_command
+  selected_command=$(history |
+    awk '{ cmd=$0; sub(/^[ ]*[0-9]+[ ]*/, "", cmd); print cmd }' |
+    sort -nr |
+    uniq |
+    peco)
+
+  if [ -n "$selected_command" ]; then
+    READLINE_LINE="$selected_command"
+    READLINE_POINT=${#READLINE_LINE}
+  fi
 }
 # for doxide: "MUST PUT ON LAST of THIS FILE"
 eval "$(zoxide init bash)"
-
