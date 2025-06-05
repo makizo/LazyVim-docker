@@ -45,7 +45,7 @@ RUN mkdir -p /root/.config && \
     rm -rf /root/.config/nvim/.git
 
 # set default shell to zsh
-SHELL ["/bin/zsh", "-c"]
+SHELL ["/bin/bash", "-c"]
 
 # the command which starts at container startup
-CMD ["/bin/zsh"]
+CMD ["/bin/bash"]
