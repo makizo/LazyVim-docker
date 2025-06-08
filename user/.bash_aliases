@@ -7,17 +7,6 @@ alias lla='ls -al'
 
 alias x='exit'   # Exit shell
 
-# Quickly edit dotfiles
-alias eba='vim ~/dotfiles/.bash_aliases'
-#alias bp='vim ~/.bash_profile'
-alias ebr='vim ~/dotfiles/.bashrc'
-alias ebc='vim ~/dev/cheatsheet/bash.cheat'
-alias etc='vim ~/dotfiles/.tmux.conf'
-alias evr='vim ~/dotfiles/.vimrc'
-alias evc='vim ~/dev/cheatsheet/vim.cheat'
-alias eac='vim ~/dev/cheatsheet/alacritty.cheat'
-alias eic='vim ~/dev/cheatsheet/i3wm.cheat'
-alias egc='vim ~/dev/cheatsheet/git.cheat'
 #alias xr='vim ~/.xinitrc'
 
 ## Navigation ##
@@ -57,10 +46,12 @@ alias gsl='git stash list'
 alias gss='git stash save'
 alias gsu='git stash save -u'
 # for docker related
-alias doil='docker image ls'
-alias doir='docker image rm'
-alias docl='docker container ls'
-alias docla='docker container ls -a'
-alias docr='docker container rm'
-alias doih='docker image --help'
-alias doch='docker container --help'
+alias dils='docker image ls'
+alias dirm='docker image rm'
+alias dcls='docker container ls'
+alias dclsa='docker container ls -a'
+alias dcrm='docker container rm'
+alias dcst='docker container start'
+alias dcat='docker container attach'
+alias dih='docker image --help'
+alias dch='docker container --help'
