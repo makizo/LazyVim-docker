@@ -35,6 +35,8 @@ RUN apk update && apk add --no-cache \
     sudo \
     valgrind \
     zoxide \
+    yadm \
+    openssh \
     zsh
 
 # create .config directory and clone LazyVim
