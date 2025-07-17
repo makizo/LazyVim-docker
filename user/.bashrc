@@ -487,7 +487,7 @@ function yy() {
 
 # export PAGER="sed -r 's/\x1B\[[0-9;]*[mGKH]//g' | vim -R -"
 
-setxkbmap us
+# setxkbmap us
 
 ###   # makizo: add this function for completion clearly.
 ###   # 関数に対して '(func)' を付加し、エイリアスに '(alias)' を付加して補完
@@ -536,10 +536,10 @@ function _my_custom_completion() {
 # 関数を使って mycommand に対する補完を設定
 complete -F _my_custom_completion mycommand
 
-# for pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+### # for pyenv
+### export PYENV_ROOT="$HOME/.pyenv"
+### [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+### eval "$(pyenv init -)"
 
 # for bash-completion
 if [ -f /etc/bash_completion ]; then
