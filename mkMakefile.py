@@ -23,7 +23,7 @@ build: .build_stamp
 
 run: .build_stamp
 	test -d $(CURRENT_DIR)/user || (echo "user directory not found" && exit 1)
-	$(DOCKER) run -it --name $(CONTAINER_NAME) -v $(CURRENT_DIR)/user:/{current_user} -u {current_user} $(IMAGE_NAME)
+	$(DOCKER) run -it --name $(CONTAINER_NAME) -v $(CURRENT_DIR)/user:/home/{current_user} -u {current_user} $(IMAGE_NAME)
 
 clean:
 	$(DOCKER) rmi $(IMAGE_NAME)
