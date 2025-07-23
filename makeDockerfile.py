@@ -10,7 +10,7 @@ dockerfile_content = f"""FROM alpine:3.21.3
 # タイムゾーンを設定
 ENV TZ=Asia/Tokyo
 
-# 必要なパッケージをインストール（bash、shadow、tzdata）
+# 必要なパッケージをインストール
 RUN apk update && apk add --no-cache \
     bash \
     build-base \
@@ -55,11 +55,10 @@ USER {current_user}
 
 # ワーキングディレクトリをユーザーのホームディレクトリに設定
 WORKDIR /home/{current_user}
-RUN mkdir -p /{current_user}/.config && \
-    git clone https://github.com/LazyVim/starter /{current_user}/.config/nvim && \
-    rm -rf /{current_user/.config/nvim/.git
+RUN mkdir -p /home/{current_user}/.config && \
+    git clone https://github.com/LazyVim/starter /home/{current_user}/.config/nvim && rm -rf /home/{current_user}/.config/nvim/.git
 
-# デフォルトコマンドをbashに設定
+# デフォルトコマンドをzshに設定
 CMD ["/bin/zsh"]
 """
 
@@ -69,5 +68,5 @@ with open('Dockerfile', 'w') as f:
 
 print(f"Dockerfileを作成しました。")
 print(f"カレントユーザー名: {current_user}")
-print("\n--- Dockerfile内容 ---")
-print(dockerfile_content)
+# print("\n--- Dockerfile内容 ---")
+# print(dockerfile_content)
