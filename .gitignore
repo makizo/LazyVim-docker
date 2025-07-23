@@ -2,3 +2,6 @@
 user/*
 !user/.bashrc
 !user/.bash_aliases
+Makefile
+Dockerfile
+
