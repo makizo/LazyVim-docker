@@ -58,8 +58,8 @@ WORKDIR /home/{current_user}
 RUN mkdir -p /home/{current_user}/.config && \
     git clone https://github.com/LazyVim/starter /home/{current_user}/.config/nvim && rm -rf /home/{current_user}/.config/nvim/.git
 
-# デフォルトコマンドをzshに設定
-CMD ["/bin/zsh"]
+# デフォルトコマンドをbashに設定
+CMD ["/bin/bash"]
 """
 
 # Dockerfileを作成
